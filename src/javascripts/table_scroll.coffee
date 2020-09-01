@@ -6,12 +6,12 @@ class TableScrollManager
     @contentTable = @container.find('.original_table_container table')
 
   perform: ->
-    #@enableContainerScrolling()
-    #@cloneAndAppendTableHeader()
-    #@alignTableWidth()
-    #@hideOriginalThead()
-    #@setHeaderWidth()
-    #@_handleWindowResize()
+    @cloneAndAppendTableHeader()
+    @alignTableWidth()
+    @hideOriginalThead()
+    @setHeaderWidth()
+    @_handleWindowResize()
+    @enableContainerScrolling()
 
   enableContainerScrolling: ->
     # Enable overflow on selected table
@@ -19,12 +19,14 @@ class TableScrollManager
 
     # Calculate offsets and heights for scroll behavior
     baseTable = @container.find('table.scroll')
+    baseTablePadding = 10
+    captionMargin = 10
     theadHeight = baseTable.find('thead').outerHeight()
     captionHeight = baseTable.find('caption').outerHeight()
     tfootHeight = baseTable.find('tfoot').outerHeight()
     topOfTablePosition = baseTable.offset().top
 
-    startScrollAt = topOfTablePosition + captionHeight
+    startScrollAt = topOfTablePosition + captionHeight + baseTablePadding + captionMargin
 
     # End scroll before the sticky header's bottom edge goes beyond the tbody content
     endScrollAt = topOfTablePosition + baseTable.height() - theadHeight - tfootHeight
@@ -38,7 +40,7 @@ class TableScrollManager
       @toggleScrollBasedOnPosition(startScrollAt, endScrollAt)
 
   toggleScrollBasedOnPosition: (startScrollAt, endScrollAt) ->
-    if (startScrollAt <= window.pageYOffset && endScrollAt > window.pageYOffset)
+    if (startScrollAt <= window.pageYOffset && endScrollAt >= window.pageYOffset)
       @container.find('.scrolling_header_table').addClass('fixed')
       @headerTable.find('caption').hide()
     else

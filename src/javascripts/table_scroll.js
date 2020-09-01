@@ -10,25 +10,28 @@
       this.contentTable = this.container.find('.original_table_container table');
     }
 
-    perform() {}
+    perform() {
+      this.cloneAndAppendTableHeader();
+      this.alignTableWidth();
+      this.hideOriginalThead();
+      this.setHeaderWidth();
+      this._handleWindowResize();
+      return this.enableContainerScrolling();
+    }
 
-    //@enableContainerScrolling()
-    //@cloneAndAppendTableHeader()
-    //@alignTableWidth()
-    //@hideOriginalThead()
-    //@setHeaderWidth()
-    //@_handleWindowResize()
     enableContainerScrolling() {
-      var baseTable, captionHeight, endScrollAt, startScrollAt, tfootHeight, theadHeight, topOfTablePosition;
+      var baseTable, baseTablePadding, captionHeight, captionMargin, endScrollAt, startScrollAt, tfootHeight, theadHeight, topOfTablePosition;
       // Enable overflow on selected table
       this.headerTable.next('.container').addClass('enable_scroll');
       // Calculate offsets and heights for scroll behavior
       baseTable = this.container.find('table.scroll');
+      baseTablePadding = 10;
+      captionMargin = 10;
       theadHeight = baseTable.find('thead').outerHeight();
       captionHeight = baseTable.find('caption').outerHeight();
       tfootHeight = baseTable.find('tfoot').outerHeight();
       topOfTablePosition = baseTable.offset().top;
-      startScrollAt = topOfTablePosition + captionHeight;
+      startScrollAt = topOfTablePosition + captionHeight + baseTablePadding + captionMargin;
       // End scroll before the sticky header's bottom edge goes beyond the tbody content
       endScrollAt = topOfTablePosition + baseTable.height() - theadHeight - tfootHeight;
       console.log({
@@ -49,7 +52,7 @@
     }
 
     toggleScrollBasedOnPosition(startScrollAt, endScrollAt) {
-      if (startScrollAt <= window.pageYOffset && endScrollAt > window.pageYOffset) {
+      if (startScrollAt <= window.pageYOffset && endScrollAt >= window.pageYOffset) {
         this.container.find('.scrolling_header_table').addClass('fixed');
         this.headerTable.find('caption').hide();
       } else {

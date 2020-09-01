@@ -20,18 +20,17 @@
     }
 
     enableContainerScrolling() {
-      var baseTable, baseTablePadding, captionHeight, captionMargin, endScrollAt, startScrollAt, tfootHeight, theadHeight, topOfTablePosition;
+      var baseTable, baseTablePadding, captionHeight, endScrollAt, startScrollAt, tfootHeight, theadHeight, topOfTablePosition;
       // Enable overflow on selected table
       this.headerTable.next('.container').addClass('enable_scroll');
       // Calculate offsets and heights for scroll behavior
       baseTable = this.container.find('table.scroll');
       baseTablePadding = 10;
-      captionMargin = 10;
       theadHeight = baseTable.find('thead').outerHeight();
-      captionHeight = baseTable.find('caption').outerHeight();
+      captionHeight = baseTable.find('caption').outerHeight(true);
       tfootHeight = baseTable.find('tfoot').outerHeight();
       topOfTablePosition = baseTable.offset().top;
-      startScrollAt = topOfTablePosition + captionHeight + baseTablePadding + captionMargin;
+      startScrollAt = topOfTablePosition + captionHeight + baseTablePadding;
       // End scroll before the sticky header's bottom edge goes beyond the tbody content
       endScrollAt = topOfTablePosition + baseTable.height() - theadHeight - tfootHeight;
       console.log({

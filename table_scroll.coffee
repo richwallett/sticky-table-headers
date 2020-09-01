@@ -21,6 +21,7 @@ class TableScrollManager
     scrollElement = @container.find('.scroll')
     headerOffset  = scrollElement.offset().top
     scrollMax     = scrollElement.height() - scrollElement.find('thead').height()
+    console.log(scrollElement)
 
     # Initial fixing of header to handle page loads where the
     # page is already scrolled
@@ -60,7 +61,7 @@ class TableScrollManager
       this.headerTable.css({'left' : '' })
 
   cloneAndAppendTableHeader: ->
-    # Original thead becomes invisible and we show this cloned header 
+    # Original thead becomes invisible and we show this cloned header
     # in a new table on top of the invisible thead
     orig = @contentTable.find('thead')
     origParent = orig.closest('table')
@@ -86,7 +87,7 @@ class TableScrollManager
     #   @container.find('.original_table_container table').parent().width() :
     #   @container.find('.original_table_container table').outerWidth()
     width = if @fullWidth
-      @container.find('.original_table_container table').parent().width() 
+      @container.find('.original_table_container table').parent().width()
     else
       @container.find('.original_table_container table').outerWidth()
     return width
@@ -104,7 +105,6 @@ class TableScrollManager
   _handleWindowResize: ->
     window.addEventListener 'resize', =>
       this._adjustHorizontalTableScroll()
-  console.log 'foo'
 
 document.addEventListener('DOMContentLoaded', ->
   $.each($('.scrolling_table_container'), (i, tableContainer) ->

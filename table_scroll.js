@@ -20,33 +20,27 @@
     }
 
     enableContainerScrolling() {
-      var context, didScroll, headerOffset, scrollElement, scrollMax;
+      var captionHeight, headerOffset, scrollElement, scrollMax, theadHeight;
       // Enable overflow on selected table
       this.headerTable.next('.container').addClass('enable_scroll');
       // Calculate offsets and heights for scroll behavior
       scrollElement = this.container.find('.scroll');
-      headerOffset = scrollElement.offset().top;
-      scrollMax = scrollElement.height() - scrollElement.find('thead').height();
-      console.log(scrollElement);
+      theadHeight = scrollElement.find('thead').height();
+      captionHeight = scrollElement.find('caption').height();
+      headerOffset = scrollElement.offset().top + captionHeight;
+      scrollMax = scrollElement.height() - theadHeight;
+      console.log(captionHeight);
       // Initial fixing of header to handle page loads where the
       // page is already scrolled
-      this.toggleScrollBasedOnPosition(headerOffset, scrollMax);
+      this.toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight);
       // Add event listener to watch scroll and toggle classes
-      didScroll = false;
-      window.addEventListener('scroll', () => {
-        return didScroll = true;
+      return window.addEventListener('scroll', () => {
+        return this.toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight);
       });
-      context = this;
-      return setInterval(() => {
-        if (didScroll) {
-          didScroll = false;
-          return context.toggleScrollBasedOnPosition(headerOffset, scrollMax);
-        }
-      }, 1);
     }
 
-    toggleScrollBasedOnPosition(headerOffset, scrollMax) {
-      if (headerOffset <= window.pageYOffset && (headerOffset + scrollMax) >= window.pageYOffset) {
+    toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight) {
+      if (headerOffset <= window.pageYOffset && (headerOffset + scrollMax - captionHeight) >= window.pageYOffset) {
         this.container.find('.scrolling_header_table').addClass('fixed');
         this.headerTable.find('caption').hide();
       } else {

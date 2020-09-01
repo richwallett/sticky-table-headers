@@ -19,28 +19,22 @@ class TableScrollManager
 
     # Calculate offsets and heights for scroll behavior
     scrollElement = @container.find('.scroll')
-    headerOffset  = scrollElement.offset().top
-    scrollMax     = scrollElement.height() - scrollElement.find('thead').height()
-    console.log(scrollElement)
+    theadHeight = scrollElement.find('thead').height()
+    captionHeight = scrollElement.find('caption').height()
+    headerOffset  = scrollElement.offset().top + captionHeight
+    scrollMax     = scrollElement.height() - theadHeight 
+    console.log(captionHeight)
 
     # Initial fixing of header to handle page loads where the
     # page is already scrolled
-    @toggleScrollBasedOnPosition(headerOffset, scrollMax)
+    @toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight)
 
     # Add event listener to watch scroll and toggle classes
-    didScroll = false
     window.addEventListener 'scroll', =>
-      didScroll = true
+      @toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight)
 
-    context = this
-    setInterval =>
-      if didScroll
-        didScroll = false
-        context.toggleScrollBasedOnPosition(headerOffset, scrollMax)
-    , 1
-
-  toggleScrollBasedOnPosition: (headerOffset, scrollMax) ->
-    if (headerOffset <= window.pageYOffset && (headerOffset + scrollMax) >= window.pageYOffset)
+  toggleScrollBasedOnPosition: (headerOffset, scrollMax, captionHeight) ->
+    if (headerOffset <= window.pageYOffset && (headerOffset + scrollMax - captionHeight) >= window.pageYOffset)
       @container.find('.scrolling_header_table').addClass('fixed')
       @headerTable.find('caption').hide()
     else

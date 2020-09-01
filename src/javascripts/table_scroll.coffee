@@ -20,17 +20,15 @@ class TableScrollManager
 
     # Calculate offsets and heights for scroll behavior
     baseTable = @container.find('table.scroll')
-    theadHeight = baseTable.find('thead').height()
-    captionHeight = baseTable.find('caption').height()
-    tfootHeight = baseTable.find('tfoot').height()
+    theadHeight = baseTable.find('thead').outerHeight()
+    captionHeight = baseTable.find('caption').outerHeight()
+    tfootHeight = baseTable.find('tfoot').outerHeight()
     topOfTablePosition = baseTable.offset().top
 
-    startScrollAt = baseTable.height() +
-      theadHeight +
-      captionHeight +
-      captionHeight # Add an additional captionHeight coupled with 'hide' on the caption when stickyness starts 
+    startScrollAt = topOfTablePosition + captionHeight
 
-    endScrollAt = topOfTablePosition + baseTable.height() - tfootHeight
+    # End scroll before the sticky header's bottom edge goes beyond the tbody content
+    endScrollAt = topOfTablePosition + baseTable.height() - theadHeight - tfootHeight
 
     # Initial fixing of header to handle page loads where the page is already scrolled
     @toggleScrollBasedOnPosition(startScrollAt, endScrollAt)
@@ -40,7 +38,8 @@ class TableScrollManager
       @toggleScrollBasedOnPosition(startScrollAt, endScrollAt)
 
   toggleScrollBasedOnPosition: (startScrollAt, endScrollAt) ->
-    if (startScrollAt <= window.pageYOffset && endScrollAt >= window.pageYOffset)
+    console.log(window.pageYOffset)
+    if (startScrollAt <= window.pageYOffset && endScrollAt > window.pageYOffset)
       @container.find('.scrolling_header_table').addClass('fixed')
       @headerTable.find('caption').hide()
     else

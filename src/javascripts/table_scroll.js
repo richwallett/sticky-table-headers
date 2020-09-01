@@ -11,7 +11,6 @@
     }
 
     perform() {
-      console.log('1');
       this.enableContainerScrolling();
       this.cloneAndAppendTableHeader();
       this.alignTableWidth();
@@ -33,6 +32,15 @@
       startScrollAt = topOfTablePosition + captionHeight;
       // End scroll before the sticky header's bottom edge goes beyond the tbody content
       endScrollAt = topOfTablePosition + baseTable.height() - theadHeight - tfootHeight;
+      console.log({
+        baseH: baseTable.height(),
+        th: theadHeight,
+        ch: captionHeight,
+        tf: tfootHeight,
+        top: topOfTablePosition,
+        start: startScrollAt,
+        end: endScrollAt
+      });
       // Initial fixing of header to handle page loads where the page is already scrolled
       this.toggleScrollBasedOnPosition(startScrollAt, endScrollAt);
       // Add event listener to watch scroll and toggle classes
@@ -42,7 +50,6 @@
     }
 
     toggleScrollBasedOnPosition(startScrollAt, endScrollAt) {
-      console.log(window.pageYOffset);
       if (startScrollAt <= window.pageYOffset && endScrollAt > window.pageYOffset) {
         this.container.find('.scrolling_header_table').addClass('fixed');
         this.headerTable.find('caption').hide();

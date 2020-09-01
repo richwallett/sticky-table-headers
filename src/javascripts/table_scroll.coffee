@@ -6,7 +6,6 @@ class TableScrollManager
     @contentTable = @container.find('.original_table_container table')
 
   perform: ->
-    console.log('1')
     @enableContainerScrolling()
     @cloneAndAppendTableHeader()
     @alignTableWidth()
@@ -29,6 +28,7 @@ class TableScrollManager
 
     # End scroll before the sticky header's bottom edge goes beyond the tbody content
     endScrollAt = topOfTablePosition + baseTable.height() - theadHeight - tfootHeight
+    console.log({ baseH: baseTable.height(), th: theadHeight, ch: captionHeight, tf: tfootHeight, top: topOfTablePosition, start: startScrollAt, end: endScrollAt })
 
     # Initial fixing of header to handle page loads where the page is already scrolled
     @toggleScrollBasedOnPosition(startScrollAt, endScrollAt)
@@ -38,7 +38,6 @@ class TableScrollManager
       @toggleScrollBasedOnPosition(startScrollAt, endScrollAt)
 
   toggleScrollBasedOnPosition: (startScrollAt, endScrollAt) ->
-    console.log(window.pageYOffset)
     if (startScrollAt <= window.pageYOffset && endScrollAt > window.pageYOffset)
       @container.find('.scrolling_header_table').addClass('fixed')
       @headerTable.find('caption').hide()

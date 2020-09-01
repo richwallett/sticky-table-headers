@@ -6,12 +6,12 @@ class TableScrollManager
     @contentTable = @container.find('.original_table_container table')
 
   perform: ->
-    @enableContainerScrolling()
-    @cloneAndAppendTableHeader()
-    @alignTableWidth()
-    @hideOriginalThead()
-    @setHeaderWidth()
-    @_handleWindowResize()
+    #@enableContainerScrolling()
+    #@cloneAndAppendTableHeader()
+    #@alignTableWidth()
+    #@hideOriginalThead()
+    #@setHeaderWidth()
+    #@_handleWindowResize()
 
   enableContainerScrolling: ->
     # Enable overflow on selected table

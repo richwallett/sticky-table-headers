@@ -10,15 +10,14 @@
       this.contentTable = this.container.find('.original_table_container table');
     }
 
-    perform() {
-      this.enableContainerScrolling();
-      this.cloneAndAppendTableHeader();
-      this.alignTableWidth();
-      this.hideOriginalThead();
-      this.setHeaderWidth();
-      return this._handleWindowResize();
-    }
+    perform() {}
 
+    //@enableContainerScrolling()
+    //@cloneAndAppendTableHeader()
+    //@alignTableWidth()
+    //@hideOriginalThead()
+    //@setHeaderWidth()
+    //@_handleWindowResize()
     enableContainerScrolling() {
       var baseTable, captionHeight, endScrollAt, startScrollAt, tfootHeight, theadHeight, topOfTablePosition;
       // Enable overflow on selected table

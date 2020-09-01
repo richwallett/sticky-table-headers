@@ -11,6 +11,7 @@
     }
 
     perform() {
+      console.log('1');
       this.enableContainerScrolling();
       this.cloneAndAppendTableHeader();
       this.alignTableWidth();
@@ -20,27 +21,27 @@
     }
 
     enableContainerScrolling() {
-      var captionHeight, headerOffset, scrollElement, scrollMax, theadHeight;
+      var baseTable, captionHeight, endScrollAt, startScrollAt, tfootHeight, theadHeight, topOfTablePosition;
       // Enable overflow on selected table
       this.headerTable.next('.container').addClass('enable_scroll');
       // Calculate offsets and heights for scroll behavior
-      scrollElement = this.container.find('.scroll');
-      theadHeight = scrollElement.find('thead').height();
-      captionHeight = scrollElement.find('caption').height();
-      headerOffset = scrollElement.offset().top + captionHeight;
-      scrollMax = scrollElement.height() - theadHeight;
-      console.log(captionHeight);
-      // Initial fixing of header to handle page loads where the
-      // page is already scrolled
-      this.toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight);
+      baseTable = this.container.find('table.scroll');
+      theadHeight = baseTable.find('thead').height();
+      captionHeight = baseTable.find('caption').height();
+      tfootHeight = baseTable.find('tfoot').height();
+      topOfTablePosition = baseTable.offset().top;
+      startScrollAt = baseTable.height() + theadHeight + captionHeight + captionHeight; // Add an additional captionHeight coupled with 'hide' on the caption when stickyness starts 
+      endScrollAt = topOfTablePosition + baseTable.height() - tfootHeight;
+      // Initial fixing of header to handle page loads where the page is already scrolled
+      this.toggleScrollBasedOnPosition(startScrollAt, endScrollAt);
       // Add event listener to watch scroll and toggle classes
       return window.addEventListener('scroll', () => {
-        return this.toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight);
+        return this.toggleScrollBasedOnPosition(startScrollAt, endScrollAt);
       });
     }
 
-    toggleScrollBasedOnPosition(headerOffset, scrollMax, captionHeight) {
-      if (headerOffset <= window.pageYOffset && (headerOffset + scrollMax - captionHeight) >= window.pageYOffset) {
+    toggleScrollBasedOnPosition(startScrollAt, endScrollAt) {
+      if (startScrollAt <= window.pageYOffset && endScrollAt >= window.pageYOffset) {
         this.container.find('.scrolling_header_table').addClass('fixed');
         this.headerTable.find('caption').hide();
       } else {
